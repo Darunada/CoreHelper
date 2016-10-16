@@ -1,0 +1,47 @@
+{
+    "name": "darunada/corehelper",
+    "type": "library",
+    "description": "Helpers for Modernized Media's Core",
+    "keywords": ["modernized media", "core", "core2", "core3"],
+    "homepage": "http://github.com/darunada/corehelper",
+    "license" : "BSD",
+    "authors" : [
+        {
+            "name": "Lea Fairbanks",
+            "email": "lea.rae.fairbanks@gmail.com",
+            "homepage": "http://www.ventekinc.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "vlucas/phpdotenv": "^2.0",
+        "nesbot/carbon": "~1.21",
+        "mtdowling/cron-expression": "^1.0",
+        "monolog/monolog": "^1.11",
+        "doctrine/inflector": "~1.0",
+        "danielstjules/stringy": "~1.8",
+        "soundasleep/html2text": "~0.2",
+        "anthonymartin/geo-location": "dev-master",
+        "mikehaertl/phpwkhtmltopdf": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreHelper\\": "src/CoreHelper/"
+        },
+        "files": [
+            "src/CoreHelper/Functions/helpers.php",
+            "src/CoreHelper/Functions/bootstrap.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoreHelper\\Tests\\": "test/CoreHelper/"
+        }
+    },
+    "minimum-stability": "dev"
+}
