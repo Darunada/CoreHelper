@@ -18,6 +18,6 @@
     </testsuites>
 
     <php>
-        <ini name="error_reporting" value="-1"/>
+        <env name="ENVIRONMENT" value="testing"/>
     </php>
 </phpunit>

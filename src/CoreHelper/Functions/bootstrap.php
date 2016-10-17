@@ -12,6 +12,13 @@ if(defined('FCPATH')) {
     try {
         $dotenv = new Dotenv\Dotenv(FCPATH);
         $dotenv->load();
+
+        $env = getenv('ENVIRONMENT', 'production');
+        $env_file = ".env.$env";
+        if(file_exists(FCPATH.$env_file)) {
+            $dotenv->overload($env_file);
+        }
+
     } catch (Dotenv\Exception\InvalidPathException $e) {
         // do nothing
     }
