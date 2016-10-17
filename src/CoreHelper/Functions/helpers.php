@@ -1,5 +1,7 @@
 <?php
 
+use Stringy\StaticStringy as Str;
+
 if (!function_exists('env')) {
     /**
      * Gets the value of an environment variable. Supports boolean, empty and null.
