@@ -60,17 +60,22 @@ if(defined('FCPATH') && !function_exists('autoloadPlatform')) {
         $modules = scandir(FCPATH."sites/$platform");
 
         foreach($modules AS $module) {
+
+            if(preg_match('/\.\.?/', $module)) {
+                continue;
+            }
+
             if($autoloadModules == null || in_array($module, $autoloadModules)) {
 
-                $autoload = function ($class_name) use ($module) {
+                $autoload = function ($class_name) use ($platform, $module) {
                     // import libs
-                    if (file_exists(FCPATH . 'sites/local/' . $module . '/libraries/' . $class_name . '.php')) {
-                        require(FCPATH . 'sites/local/import/libraries/' . $class_name . '.php');
+                    if (file_exists(FCPATH . "sites/$platform/$module/libraries/$class_name.php")) {
+                        require(FCPATH . "sites/$platform/$module/libraries/$class_name.php");
                     }
 
                     // enums
-                    if (file_exists(FCPATH . 'sites/local/import/libraries/enums/' . $class_name . '.php')) {
-                        require(FCPATH . 'sites/local/import/libraries/enums/' . $class_name . '.php');
+                    if (file_exists(FCPATH . "sites/$platform/$module/libraries/enums/$class_name.php")) {
+                        require(FCPATH . "sites/$platform/$module/libraries/enums/$class_name.php");
                     }
                 };
 
@@ -78,5 +83,67 @@ if(defined('FCPATH') && !function_exists('autoloadPlatform')) {
             }
 
         }
+    }
+}
+
+if(defined('FCPATH') && !function_exists('autoloadFolder')) {
+    /**
+     * Instantiates spl autoloaders for all libraries in platform modules
+     *
+     * @param string $folder the folder name (no slash before or after)
+     * @param string $platform The name of a platform folder in sites/
+     * @param string $module The module name
+     */
+    function autoloadFolder($folder, $platform='local', $module='main') {
+
+        $paths = [
+            FCPATH."sites/$platform",
+            FCPATH."sites/$platform/$module",
+            FCPATH."sites/$platform/$module/$folder"
+        ];
+
+        foreach($paths as $path) {
+            if (!file_exists($path)) {
+                return;
+            }
+        }
+
+
+        $autoload = function ($class_name) use($platform, $module, $folder) {
+            // autoload folder
+            if (file_exists(FCPATH . "sites/$platform/$module/$folder/$class_name.php")) {
+                require(FCPATH . "sites/$platform/$module/$folder/$class_name.php");
+            }
+        };
+
+        spl_autoload_register($autoload);
+    }
+}
+
+if(!function_exists('remove_underscores')) {
+    /**
+     * replace all underscores in $word with $sub
+     *
+     * @param $word
+     * @param string $sub
+     * @return mixed
+     */
+    function remove_underscores($word, $sub = ' ')
+    {
+        return str_replace('_', $sub, $word);
+    }
+}
+
+if(!function_exists('is_unsigned_integer')) {
+    /**
+     * Checks if the $value passed is both an integer and is greater than or equal to zero.
+     * Created as a helper function when the Validatable class was ported to MM's core 2.
+     * @author Alan <alan@modernizedmedia.com>
+     * @param int $value TRUE will be returned if (is_int($value) && $value >= 0)
+     * @return bool (is_int($value) && $value >= 0)
+     */
+    function is_unsigned_integer($value)
+    {
+        return (is_int($value) && $value >= 0);
     }
 }
