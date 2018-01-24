@@ -1,4 +1,5 @@
 <?php
+
 namespace CoreHelper\Enums;
 
 /**
@@ -11,18 +12,21 @@ abstract class Dynamic_Enum implements Enum
      * @var array
      */
     private static $singletons = array();
+
     /**
      * @var array
      */
-    private $enum_values       = array();
+    private $enum_values = array();
+
     /**
      * @var array
      */
-    private $model             = array();
+    private $model = array();
+
     /**
      * @var null
      */
-    private $param             = null;
+    private $param = null;
 
     /**
      * @param null $param
@@ -121,8 +125,8 @@ abstract class Dynamic_Enum implements Enum
      * @param array $exclude
      * @return mixed|void
      */
-    public function generate_select($name, $selected = array(), $params = array(), $format
-    = '', $exclude = array())
+    public function generate_select($name, $selected = array(), $params = array(),
+                                    $format = '', $exclude = array())
     {
         if (!is_array($selected)) {
             if (empty($selected)) $selected = array();
@@ -152,7 +156,7 @@ abstract class Dynamic_Enum implements Enum
                 foreach ($functions as $function) {
                     // has param?
                     $matches = array();
-                    $param   = null;
+                    $param = null;
                     preg_match('/\[(.*?)\]/i', $function, $matches);
                     if (isset($matches[1])) {
                         $param = $matches[1];
@@ -190,9 +194,9 @@ abstract class Dynamic_Enum implements Enum
                     'name' => $name,
                 );
 
-                if ($default) $entry['default']    = $default;
+                if ($default) $entry['default'] = $default;
                 if ($company_id) $entry['company_id'] = $company_id;
-                if ($user_id) $entry['user_id']    = $user_id;
+                if ($user_id) $entry['user_id'] = $user_id;
                 $this->model[get_called_class()]->insert($entry);
             }
         }

@@ -38,7 +38,7 @@ class ObjectModel extends TableModel
     private function _fetch_class()
     {
         if ($this->_class_name == NULL) {
-            $class             = preg_replace('/(_model)?$/', '', get_class($this));
+            $class = preg_replace('/(_model)?$/', '', get_class($this));
             $this->_class_name = str_replace(' ', '_', ucwords(str_replace('_', ' ', strtolower($class))));
         }
     }
@@ -78,8 +78,9 @@ class ObjectModel extends TableModel
                 throw new RecordNotFoundException("Unable to find primary key value '$key' in {$this->_table}");
             }
 
-            $results[] = new $this->_class_name((array) $row);
-        } unset($key);
+            $results[] = new $this->_class_name((array)$row);
+        }
+        unset($key);
 
 
         if (count($results) > 1 || $return_array) {
@@ -93,7 +94,7 @@ class ObjectModel extends TableModel
      *
      * SELECT * FROM table
      *
-     * @returns Array[Objects]
+     * @returns array[Objects]
      */
     public function all()
     {
@@ -102,8 +103,9 @@ class ObjectModel extends TableModel
 
         $all = $this->get_all();
         foreach ($all as $one) {
-            $results[] = new $this->_class_name((array) $one);
-        } unset($one);
+            $results[] = new $this->_class_name((array)$one);
+        }
+        unset($one);
 
         return $results;
     }
@@ -114,16 +116,16 @@ class ObjectModel extends TableModel
      * SELECT * FROM table LIMIT $limit
      *
      * @param int $limit The number of results to return
-     * @returns Object|Array[Object]|null
+     * @returns Object|array[Object]|null
      */
     public function take($limit = null)
     {
-        $query_result = $this->db->limit($limit? : 1)
+        $query_result = $this->db->limit($limit ?: 1)
             ->get($this->_table)->result();
 
         $results = array();
         foreach ($query_result as &$row) {
-            $results[] = new $this->_class_name((array) $row);
+            $results[] = new $this->_class_name((array)$row);
         }
 
         if ($limit != null) {
@@ -148,7 +150,7 @@ class ObjectModel extends TableModel
             throw new RecordNotFoundException("take() failed on {$this->_table}.  Is the table empty?");
         }
 
-        return new $this->_class_name((array) $row);
+        return new $this->_class_name((array)$row);
     }
 
     /**
@@ -161,13 +163,13 @@ class ObjectModel extends TableModel
      */
     public function first($limit = null)
     {
-        $query_result = $this->db->limit($limit? : 1)
+        $query_result = $this->db->limit($limit ?: 1)
             ->order_by($this->primary_key, 'ASC')
             ->get($this->_table)->result();
 
         $results = array();
         foreach ($query_result as &$row) {
-            $results[] = new $this->_class_name((array) $row);
+            $results[] = new $this->_class_name((array)$row);
         }
 
         if (empty($results)) return null;
@@ -196,7 +198,7 @@ class ObjectModel extends TableModel
             throw new RecordNotFoundException("_first() failed on {$this->_table}.  Is the table empty?");
         }
 
-        return new $this->_class_name((array) $row);
+        return new $this->_class_name((array)$row);
     }
 
     /**
@@ -209,13 +211,13 @@ class ObjectModel extends TableModel
      */
     public function last($limit = null)
     {
-        $query_result = $this->db->limit($limit? : 1)
+        $query_result = $this->db->limit($limit ?: 1)
             ->order_by($this->primary_key, 'DESC')
             ->get($this->_table)->result();
 
         $results = array();
         foreach ($query_result as &$row) {
-            $results[] = new $this->_class_name((array) $row);
+            $results[] = new $this->_class_name((array)$row);
         }
 
         if (empty($results)) return null;
@@ -244,48 +246,50 @@ class ObjectModel extends TableModel
             throw new RecordNotFoundException("_last() failed on {$this->_table}.  Is the table empty?");
         }
 
-        return new $this->_class_name((array) $row);
+        return new $this->_class_name((array)$row);
     }
 
     /**
      * find_many_by retrieves all records matching some conditions
      *
-     * @params Array $conditions $key=>$value pair of conditios
-     * @returns Array
+     * @params array $conditions $key=>$value pair of conditions
+     * @returns array
      */
     public function find_many_by()
     {
         $results = array();
-        $query   = call_user_func_array(array(&$this, 'get_many_by'), func_get_args());
+        $query = call_user_func_array(array(&$this, 'get_many_by'), func_get_args());
         //$query = $this->get_many_by($conditions);
 
         foreach ($query as &$obj) {
-            $results[] = new $this->_class_name((array) $obj);
-        } unset($obj);
+            $results[] = new $this->_class_name((array)$obj);
+        }
+        unset($obj);
 
 
         return $results;
-    }
-
-    public function find_by()
-    {
-        $results = array();
-        $query   = call_user_func_array(array(&$this, 'get_by'), func_get_args());
-        if (!empty($query)) {
-            return new $this->_class_name((array) $query);
-        }
-
-        throw new RecordNotFoundException();
     }
 
     /**
      * find_by retrieves the first record matching some conditions
      * It will throw a RecordNotFound exception if no record is found.
      *
-     * @params Array $conditions $key=>$value pair of conditios
+     * @params Array $conditions $key=>$value pair of conditions
      * @returns Object
      * @throws RecordNotFound
      */
+    public function find_by()
+    {
+        $results = array();
+        $query = call_user_func_array(array(&$this, 'get_by'), func_get_args());
+        if (!empty($query)) {
+            return new $this->_class_name((array)$query);
+        }
+
+        throw new RecordNotFoundException();
+    }
+
+
     //public function _find_by();
 
 

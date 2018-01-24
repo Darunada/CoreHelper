@@ -1,6 +1,7 @@
 <?php
 
 namespace CoreHelper\Exceptions;
+
 /**
  * Class NoResultsException
  * @package CoreHelper\Exceptions

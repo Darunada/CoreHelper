@@ -17,31 +17,27 @@ class ObjectValidator
     /**
      * @var null
      */
-    private $name        = null;
+    private $name = null;
+
     /**
      * @var null
      */
-    private $value       = null;
+    private $value = null;
+
     /**
      * @var array
      */
-    private $errors      = array();
+    private $errors = array();
+
     /**
      * @var array
      */
-    private $allow_null  = array();
+    private $allow_null = array();
+
     /**
      * @var array
      */
     private $allow_empty = array();
-
-    /**
-     * ObjectValidator constructor.
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
      * @param $name
@@ -49,7 +45,7 @@ class ObjectValidator
      */
     public function set_attribute($name, $value)
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->value = $value;
     }
 
@@ -88,7 +84,7 @@ class ObjectValidator
     /**
      *
      * @param bool $opt
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function allow_empty($opt = true)
     {
@@ -101,7 +97,7 @@ class ObjectValidator
     /**
      *
      * @param bool $opt
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function allow_null($opt = true)
     {
@@ -114,7 +110,7 @@ class ObjectValidator
     /**
      *
      * @param int $length
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function min_length($length)
     {
@@ -127,7 +123,7 @@ class ObjectValidator
     /**
      *
      * @param int $length
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function max_length($length)
     {
@@ -140,7 +136,7 @@ class ObjectValidator
     /**
      *
      * @param string $pattern
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function matches($pattern)
     {
@@ -163,7 +159,7 @@ class ObjectValidator
     /**
      *
      * @param mixed $pattern
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function strictly_matches($pattern)
     {
@@ -176,7 +172,7 @@ class ObjectValidator
     /**
      *
      * @param string $pattern
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function matches_regex($pattern)
     {
@@ -189,7 +185,7 @@ class ObjectValidator
 
     /**
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_email()
     {
@@ -201,7 +197,7 @@ class ObjectValidator
 
     /**
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_boolean()
     {
@@ -214,7 +210,7 @@ class ObjectValidator
     /**
      *
      * @param string $format
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_date($format = 'Y-m-d H:i:s')
     {
@@ -227,7 +223,7 @@ class ObjectValidator
     /**
      * Checks if a value is both an integer and greater than or equal to zero.
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_unsigned_integer()
     {
@@ -241,7 +237,7 @@ class ObjectValidator
 
     /**
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_integer()
     {
@@ -253,7 +249,7 @@ class ObjectValidator
 
     /**
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_number()
     {
@@ -265,7 +261,7 @@ class ObjectValidator
 
     /**
      *
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_required()
     {
@@ -279,7 +275,7 @@ class ObjectValidator
      *
      * @param bool $param
      * @param string $message
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function param_is_true($param, $message = "")
     {
@@ -296,7 +292,7 @@ class ObjectValidator
      *
      * @param bool $param
      * @param string $message
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function param_is_false($param, $message = "")
     {
@@ -314,7 +310,7 @@ class ObjectValidator
      * @param type $model
      * @param array $except
      * @param string $column
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_unique($model, $except = array(), $column = NULL)
     {
@@ -339,7 +335,7 @@ class ObjectValidator
      *
      * @param mixed $number
      * @param string $name
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_greater_than($number, $name = '')
     {
@@ -354,7 +350,7 @@ class ObjectValidator
      *
      * @param mixed $number
      * @param string $name
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_less_than($number, $name = '')
     {
@@ -365,6 +361,10 @@ class ObjectValidator
         return $this;
     }
 
+    /**
+     * @param $type
+     * @param $message
+     */
     private function log_error($type, $message)
     {
         if (!isset($this->errors[$this->name]))
@@ -376,7 +376,7 @@ class ObjectValidator
     /**
      * @deprecated This method should not be used in MM's core 2 as it is specific to
      * MM's core 3.
-     * @return \Object_Validator
+     * @return ObjectValidator
      */
     public function is_core_id()
     {

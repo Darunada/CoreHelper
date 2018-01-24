@@ -15,6 +15,7 @@ abstract class StaticEnum implements Enum
 
     /**
      * @return mixed
+     * @throws \ReflectionException
      */
     private static function get_constants()
     {
@@ -24,7 +25,7 @@ abstract class StaticEnum implements Enum
         }
         if (!isset(self::$constCache[$class])) {
             self::$constCache[$class] = array();
-            $reflect                  = new \ReflectionClass(get_called_class());
+            $reflect = new \ReflectionClass(get_called_class());
             self::$constCache[$class] = $reflect->getConstants();
         }
         return self::$constCache[$class];
@@ -34,6 +35,7 @@ abstract class StaticEnum implements Enum
      * @param $name
      * @param bool $strict
      * @return bool
+     * @throws \ReflectionException
      */
     public static function is_valid_name($name, $strict = false)
     {
@@ -50,6 +52,7 @@ abstract class StaticEnum implements Enum
     /**
      * @param $value
      * @return bool
+     * @throws \ReflectionException
      */
     public static function is_valid_value($value)
     {
@@ -63,6 +66,7 @@ abstract class StaticEnum implements Enum
      * @param array $params
      * @param string $format
      * @param array $exclude
+     * @throws \ReflectionException
      */
     public static function generate_select($name, $selected = array(), $params = array(), $format
     = '', $exclude = array())
@@ -89,7 +93,7 @@ abstract class StaticEnum implements Enum
                 foreach ($functions as $function) {
                     // has param?
                     $matches = array();
-                    $param   = null;
+                    $param = null;
                     preg_match('/\[(.*?)\]/i', $function, $matches);
                     if (isset($matches[1])) {
                         $param = $matches[1];
@@ -116,6 +120,7 @@ abstract class StaticEnum implements Enum
     /**
      * @param $type_id
      * @return bool
+     * @throws \ReflectionException
      */
     public static function exists($type_id)
     {
@@ -132,6 +137,7 @@ abstract class StaticEnum implements Enum
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
     public static function get_keys()
     {
@@ -140,16 +146,17 @@ abstract class StaticEnum implements Enum
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
     public static function dropdown()
     {
-        $class  = get_called_class();
-        $ref    = new ReflectionClass($class);
+        $class = get_called_class();
+        $ref = new ReflectionClass($class);
         $consts = $ref->getConstants();
-        $array  = array();
+        $array = array();
         foreach ($consts as $const) {
-            $name          = strtolower($class).'.'.$const;
-            $lang          = lang($name);
+            $name = strtolower($class) . '.' . $const;
+            $lang = lang($name);
             $array[$const] = $name == $lang ? self::get_name($const) : $lang;
         }
         return $array;
@@ -157,6 +164,7 @@ abstract class StaticEnum implements Enum
 
     /**
      * @return mixed
+     * @throws \ReflectionException
      */
     public static function get_all()
     {
@@ -166,6 +174,7 @@ abstract class StaticEnum implements Enum
     /**
      * @param $name
      * @return null
+     * @throws \ReflectionException
      */
     public static function get_value($name)
     {
@@ -176,6 +185,7 @@ abstract class StaticEnum implements Enum
     /**
      * @param $value
      * @return null
+     * @throws \ReflectionException
      */
     public static function get_name($value)
     {
@@ -183,6 +193,7 @@ abstract class StaticEnum implements Enum
         return isset($const[$value]) ? $const[$value] : NULL;
     }
 }
+
 if (!function_exists('remove_underscores')) {
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace CoreHelper\Exceptions;
+
 /**
  * Class FormValidationException
  * @package CoreHelper\Exceptions
@@ -8,4 +9,4 @@ namespace CoreHelper\Exceptions;
 class FormValidationException extends \RuntimeException
 {
 
-};
+}

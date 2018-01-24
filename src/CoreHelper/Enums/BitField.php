@@ -1,6 +1,7 @@
 <?php
 
 namespace CoreHelper\Enums;
+
 /**
  * Class BitField
  * @package CoreHelper\Enums
@@ -39,14 +40,15 @@ abstract class BitField extends StaticEnum
      * @param $field
      * @param callable|null $formatter
      * @return array
+     * @throws \ReflectionException
      */
     static public function to_array($field, Callable $formatter = null)
     {
         $to_return = array();
-        foreach (self::get_all() as $name=>$value) {
+        foreach (self::get_all() as $name => $value) {
             if (self::is_set($field, $value)) {
                 $str = $name;
-                if($formatter != null) {
+                if ($formatter != null) {
                     $str = $formatter($name, $value);
                 }
                 $to_return[] = $str;
