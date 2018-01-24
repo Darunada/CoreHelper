@@ -2,10 +2,21 @@
 
 namespace CoreHelper\Enums;
 
+/**
+ * Class StaticEnum
+ * @package CoreHelper\Enums
+ */
 abstract class StaticEnum implements Enum
 {
+    /**
+     * @var null
+     */
     private static $constCache = NULL;
 
+    /**
+     * @return mixed
+     * @throws \ReflectionException
+     */
     private static function get_constants()
     {
         $class = get_called_class();
@@ -14,12 +25,18 @@ abstract class StaticEnum implements Enum
         }
         if (!isset(self::$constCache[$class])) {
             self::$constCache[$class] = array();
-            $reflect                  = new \ReflectionClass(get_called_class());
+            $reflect = new \ReflectionClass(get_called_class());
             self::$constCache[$class] = $reflect->getConstants();
         }
         return self::$constCache[$class];
     }
 
+    /**
+     * @param $name
+     * @param bool $strict
+     * @return bool
+     * @throws \ReflectionException
+     */
     public static function is_valid_name($name, $strict = false)
     {
         $constants = self::get_constants();
@@ -32,12 +49,25 @@ abstract class StaticEnum implements Enum
         return in_array(strtolower($name), $keys);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     * @throws \ReflectionException
+     */
     public static function is_valid_value($value)
     {
         $values = array_values(self::get_constants());
         return in_array($value, $values, $strict = true);
     }
 
+    /**
+     * @param $name
+     * @param array $selected
+     * @param array $params
+     * @param string $format
+     * @param array $exclude
+     * @throws \ReflectionException
+     */
     public static function generate_select($name, $selected = array(), $params = array(), $format
     = '', $exclude = array())
     {
@@ -63,7 +93,7 @@ abstract class StaticEnum implements Enum
                 foreach ($functions as $function) {
                     // has param?
                     $matches = array();
-                    $param   = null;
+                    $param = null;
                     preg_match('/\[(.*?)\]/i', $function, $matches);
                     if (isset($matches[1])) {
                         $param = $matches[1];
@@ -87,6 +117,11 @@ abstract class StaticEnum implements Enum
         echo '</select>';
     }
 
+    /**
+     * @param $type_id
+     * @return bool
+     * @throws \ReflectionException
+     */
     public static function exists($type_id)
     {
         $const = self::get_all();
@@ -100,44 +135,71 @@ abstract class StaticEnum implements Enum
         return false;
     }
 
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
     public static function get_keys()
     {
-        return arrya_keys(self::get_all());
+        return array_keys(self::get_all());
     }
 
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
     public static function dropdown()
     {
-        $class  = get_called_class();
-        $ref    = new ReflectionClass($class);
+        $class = get_called_class();
+        $ref = new ReflectionClass($class);
         $consts = $ref->getConstants();
-        $array  = array();
+        $array = array();
         foreach ($consts as $const) {
-            $name          = strtolower($class).'.'.$const;
-            $lang          = lang($name);
+            $name = strtolower($class) . '.' . $const;
+            $lang = lang($name);
             $array[$const] = $name == $lang ? self::get_name($const) : $lang;
         }
         return $array;
     }
 
+    /**
+     * @return mixed
+     * @throws \ReflectionException
+     */
     public static function get_all()
     {
         return self::get_constants();
     }
 
+    /**
+     * @param $name
+     * @return null
+     * @throws \ReflectionException
+     */
     public static function get_value($name)
     {
         $const = self::get_all();
         return isset($const[$name]) ? $const[$name] : NULL;
     }
 
+    /**
+     * @param $value
+     * @return null
+     * @throws \ReflectionException
+     */
     public static function get_name($value)
     {
         $const = array_flip(self::get_all());
         return isset($const[$value]) ? $const[$value] : NULL;
     }
 }
+
 if (!function_exists('remove_underscores')) {
 
+    /**
+     * @param $str
+     * @return mixed
+     */
     function remove_underscores($str)
     {
         return str_replace('_', ' ', $str);

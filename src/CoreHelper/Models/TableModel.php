@@ -111,11 +111,9 @@ class TableModel extends \MY_Model
     public function __call($method, $arguments)
     {
         $db_method = array($this->db, $method);
-        if (is_callable($db_method))
-        {
+        if (is_callable($db_method)) {
             $result = call_user_func_array($db_method, $arguments);
-            if (is_object($result) && $result === $this->db)
-            {
+            if (is_object($result) && $result === $this->db) {
                 return $this;
             }
             return $result;
@@ -172,7 +170,7 @@ class TableModel extends \MY_Model
     public function get_by()
     {
         $args = func_get_args();
-        $where = & $args;
+        $where = &$args;
         $this->_set_where($where);
 
         return $this->db->get($this->_table)
@@ -211,7 +209,7 @@ class TableModel extends \MY_Model
     public function get_many_by()
     {
         $args = func_get_args();
-        $where = & $args;
+        $where = &$args;
         $this->_set_where($where);
         return $this->get_all();
     }
@@ -244,7 +242,7 @@ class TableModel extends \MY_Model
     public function count_by()
     {
         $args = func_get_args();
-        $where = & $args;
+        $where = &$args;
         $this->_set_where($where);
         return $this->db->count_all_results($this->_table);
     }
@@ -272,10 +270,8 @@ class TableModel extends \MY_Model
      */
     public function insert($data, $skip_validation = FALSE)
     {
-        if ($skip_validation === FALSE)
-        {
-            if (!$this->_run_validation($data))
-            {
+        if ($skip_validation === FALSE) {
+            if (!$this->_run_validation($data)) {
                 return FALSE;
             }
         }
@@ -300,12 +296,9 @@ class TableModel extends \MY_Model
     public function insert_many($data, $skip_validation = FALSE)
     {
         $ids = array();
-        foreach ($data as $row)
-        {
-            if ($skip_validation === FALSE)
-            {
-                if (!$this->_run_validation($data))
-                {
+        foreach ($data as $row) {
+            if ($skip_validation === FALSE) {
+                if (!$this->_run_validation($data)) {
                     $ids[] = FALSE;
                     continue;
                 }
@@ -330,10 +323,8 @@ class TableModel extends \MY_Model
      */
     public function update($primary_value, $data, $skip_validation = FALSE)
     {
-        if ($skip_validation === FALSE)
-        {
-            if (!$this->_run_validation($data))
-            {
+        if ($skip_validation === FALSE) {
+            if (!$this->_run_validation($data)) {
                 return FALSE;
             }
         }
@@ -363,8 +354,7 @@ class TableModel extends \MY_Model
         $args = func_get_args();
         $data = array_pop($args);
         $this->_set_where($args);
-        if (!$this->_run_validation($data))
-        {
+        if (!$this->_run_validation($data)) {
             return FALSE;
         }
         $this->skip_validation = FALSE;
@@ -383,10 +373,8 @@ class TableModel extends \MY_Model
      */
     public function update_many($primary_values, $data, $skip_validation = FALSE)
     {
-        if ($skip_validation === FALSE)
-        {
-            if (!$this->_run_validation($data))
-            {
+        if ($skip_validation === FALSE) {
+            if (!$this->_run_validation($data)) {
                 return FALSE;
             }
         }
@@ -457,20 +445,16 @@ class TableModel extends \MY_Model
     function dropdown()
     {
         $args = func_get_args();
-        if (count($args) == 2)
-        {
+        if (count($args) == 2) {
             list($key, $value) = $args;
-        }
-        else
-        {
+        } else {
             $key = $this->primary_key;
             $value = $args[0];
         }
         $query = $this->db->select(array($key, $value))
             ->get($this->_table);
         $options = array();
-        foreach ($query->result() as $row)
-        {
+        foreach ($query->result() as $row) {
             $options[$row->{$key}] = $row->{$value};
         }
         return $options;
@@ -505,7 +489,7 @@ class TableModel extends \MY_Model
     public function limit($limit, $offset = 0)
     {
         $args = func_get_args();
-        $limit = & $args;
+        $limit = &$args;
         $this->_set_limit($limit);
         return $this;
     }
@@ -541,10 +525,8 @@ class TableModel extends \MY_Model
     public function fields()
     {
         $keys = array();
-        if ($this->validate)
-        {
-            foreach ($this->validate as $key)
-            {
+        if ($this->validate) {
+            foreach ($this->validate as $key) {
                 $keys[] = $key['field'];
             }
         }
@@ -562,22 +544,16 @@ class TableModel extends \MY_Model
     public function filter_data($table, $data)
     {
         $filtered_data = array();
-        if (!is_array($data))
-        {
-            if (is_object($data))
-            {
-                $data = (array) $data;
-            }
-            else
-            {
+        if (!is_array($data)) {
+            if (is_object($data)) {
+                $data = (array)$data;
+            } else {
                 return $filtered_data;
             }
         }
         $columns = $this->db->list_fields($table);
-        if (!empty($columns))
-        {
-            foreach ($columns as $column)
-            {
+        if (!empty($columns)) {
+            foreach ($columns as $column) {
                 if (array_key_exists($column, $data))
                     $filtered_data[$column] = $data[$column];
             }
@@ -594,8 +570,7 @@ class TableModel extends \MY_Model
      */
     private function _run_before_create($data)
     {
-        foreach ($this->before_create as $method)
-        {
+        foreach ($this->before_create as $method) {
             $data = call_user_func_array(array($this, $method), array($data));
         }
         return $data;
@@ -610,8 +585,7 @@ class TableModel extends \MY_Model
      */
     private function _run_after_create($data, $id)
     {
-        foreach ($this->after_create as $method)
-        {
+        foreach ($this->after_create as $method) {
             call_user_func_array(array($this, $method), array($data, $id));
         }
     }
@@ -626,32 +600,25 @@ class TableModel extends \MY_Model
      */
     private function _run_validation($data)
     {
-        if ($this->skip_validation)
-        {
+        if ($this->skip_validation) {
             return TRUE;
         }
-        if (empty($this->validate))
-        {
+        if (empty($this->validate)) {
             return TRUE;
         }
         $this->load->library('form_validation');
         // only set the model if it can be used for callbacks
-        if ($class = get_class($this) AND $class !== 'MY_Model')
-        {
+        if ($class = get_class($this) AND $class !== 'MY_Model') {
             // make sure their MY_Form_validation is set up for it
-            if (method_exists($this->form_validation, 'set_model'))
-            {
+            if (method_exists($this->form_validation, 'set_model')) {
                 $this->form_validation->set_model($class);
             }
         }
         $this->form_validation->set_data($data);
-        if (is_array($this->validate))
-        {
+        if (is_array($this->validate)) {
             $this->form_validation->set_rules($this->validate);
             return $this->form_validation->run();
-        }
-        else
-        {
+        } else {
             $this->form_validation->run($this->validate);
         }
     }
@@ -663,8 +630,7 @@ class TableModel extends \MY_Model
      */
     private function _fetch_table()
     {
-        if ($this->_table == NULL)
-        {
+        if ($this->_table == NULL) {
             $class = preg_replace('/(_model)?$/', '', get_class($this));
             $this->_table = plural(strtolower($class));
         }
@@ -678,12 +644,9 @@ class TableModel extends \MY_Model
      */
     private function _set_where($params)
     {
-        if (count($params) == 1)
-        {
+        if (count($params) == 1) {
             $this->db->where($params[0]);
-        }
-        else
-        {
+        } else {
             $this->db->where($params[0], $params[1]);
         }
     }
@@ -696,20 +659,14 @@ class TableModel extends \MY_Model
      */
     private function _set_limit($params)
     {
-        if (count($params) == 1)
-        {
-            if (is_array($params[0]))
-            {
+        if (count($params) == 1) {
+            if (is_array($params[0])) {
                 $this->db->limit($params[0][0], $params[0][1]);
-            }
-            else
-            {
+            } else {
                 $this->db->limit($params[0]);
             }
-        }
-        else
-        {
-            $this->db->limit((int) $params[0], (int) $params[1]);
+        } else {
+            $this->db->limit((int)$params[0], (int)$params[1]);
         }
     }
 

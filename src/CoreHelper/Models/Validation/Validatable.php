@@ -19,9 +19,16 @@ abstract class Validatable
      * extend Validatable and use the Properties trait
      * @var ObjectValidator
      */
-    protected $_object_validator  = NULL;
+    protected $_object_validator = NULL;
+
+    /**
+     * @var null
+     */
     protected $_validation_errors = NULL;
 
+    /**
+     * @return mixed
+     */
     abstract protected function validate();
 
     /**
@@ -54,7 +61,8 @@ abstract class Validatable
                 if (property_exists($this, $key)) {
                     $this->$key = $param;
                 }
-            } unset($param);
+            }
+            unset($param);
         }
     }
 
@@ -102,7 +110,7 @@ abstract class Validatable
     final public function run_validator()
     {
         $errors = array();
-        $valid  = $this->_object_validator->run($errors);
+        $valid = $this->_object_validator->run($errors);
 
         unset($this->_object_validator);
         unset($this->_validation_errors);
