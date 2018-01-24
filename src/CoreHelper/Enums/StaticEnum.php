@@ -2,10 +2,20 @@
 
 namespace CoreHelper\Enums;
 
+/**
+ * Class StaticEnum
+ * @package CoreHelper\Enums
+ */
 abstract class StaticEnum implements Enum
 {
+    /**
+     * @var null
+     */
     private static $constCache = NULL;
 
+    /**
+     * @return mixed
+     */
     private static function get_constants()
     {
         $class = get_called_class();
@@ -20,6 +30,11 @@ abstract class StaticEnum implements Enum
         return self::$constCache[$class];
     }
 
+    /**
+     * @param $name
+     * @param bool $strict
+     * @return bool
+     */
     public static function is_valid_name($name, $strict = false)
     {
         $constants = self::get_constants();
@@ -32,12 +47,23 @@ abstract class StaticEnum implements Enum
         return in_array(strtolower($name), $keys);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function is_valid_value($value)
     {
         $values = array_values(self::get_constants());
         return in_array($value, $values, $strict = true);
     }
 
+    /**
+     * @param $name
+     * @param array $selected
+     * @param array $params
+     * @param string $format
+     * @param array $exclude
+     */
     public static function generate_select($name, $selected = array(), $params = array(), $format
     = '', $exclude = array())
     {
@@ -87,6 +113,10 @@ abstract class StaticEnum implements Enum
         echo '</select>';
     }
 
+    /**
+     * @param $type_id
+     * @return bool
+     */
     public static function exists($type_id)
     {
         $const = self::get_all();
@@ -100,11 +130,17 @@ abstract class StaticEnum implements Enum
         return false;
     }
 
+    /**
+     * @return array
+     */
     public static function get_keys()
     {
-        return arrya_keys(self::get_all());
+        return array_keys(self::get_all());
     }
 
+    /**
+     * @return array
+     */
     public static function dropdown()
     {
         $class  = get_called_class();
@@ -119,17 +155,28 @@ abstract class StaticEnum implements Enum
         return $array;
     }
 
+    /**
+     * @return mixed
+     */
     public static function get_all()
     {
         return self::get_constants();
     }
 
+    /**
+     * @param $name
+     * @return null
+     */
     public static function get_value($name)
     {
         $const = self::get_all();
         return isset($const[$name]) ? $const[$name] : NULL;
     }
 
+    /**
+     * @param $value
+     * @return null
+     */
     public static function get_name($value)
     {
         $const = array_flip(self::get_all());
@@ -138,6 +185,10 @@ abstract class StaticEnum implements Enum
 }
 if (!function_exists('remove_underscores')) {
 
+    /**
+     * @param $str
+     * @return mixed
+     */
     function remove_underscores($str)
     {
         return str_replace('_', ' ', $str);

@@ -16,8 +16,14 @@ use CoreHelper\Exceptions\RecordNotFoundException;
  */
 class ObjectModel extends TableModel
 {
+    /**
+     * @var null
+     */
     protected $_class_name = null;
 
+    /**
+     * ObjectModel constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -37,6 +43,9 @@ class ObjectModel extends TableModel
         }
     }
 
+    /**
+     * @param $class
+     */
     public function set_class($class)
     {
         $this->_class_name = $class;

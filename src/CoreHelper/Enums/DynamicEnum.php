@@ -7,11 +7,27 @@ namespace CoreHelper\Enums;
  */
 abstract class Dynamic_Enum implements Enum
 {
+    /**
+     * @var array
+     */
     private static $singletons = array();
+    /**
+     * @var array
+     */
     private $enum_values       = array();
+    /**
+     * @var array
+     */
     private $model             = array();
+    /**
+     * @var null
+     */
     private $param             = null;
 
+    /**
+     * @param null $param
+     * @return mixed
+     */
     public static function singleton($param = null)
     {
         $class = get_called_class();
@@ -26,11 +42,17 @@ abstract class Dynamic_Enum implements Enum
         return self::$singletons[$class][$param];
     }
 
+    /**
+     * Dynamic_Enum constructor.
+     */
     protected function __construct()
     {
         $this->enum_values = array();
     }
 
+    /**
+     * @param $values
+     */
     protected function set_values($values)
     {
         if (!is_array($values)) {
@@ -39,21 +61,36 @@ abstract class Dynamic_Enum implements Enum
         $this->enum_values = $values;
     }
 
+    /**
+     * @param $model
+     */
     protected function set_model($model)
     {
         $this->model[get_called_class()] = $model;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     function __get($name)
     {
         return $this->enum_values[$name]; //or throw Exception?
     }
 
+    /**
+     * @return array
+     */
     public function get_constants()
     {
         return $this->enum_values;
     }
 
+    /**
+     * @param $name
+     * @param bool $strict
+     * @return bool
+     */
     public function is_valid_name($name, $strict = false)
     {
         $constants = $this->get_constants();
@@ -66,12 +103,24 @@ abstract class Dynamic_Enum implements Enum
         return in_array(strtolower($name), $keys);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public function is_valid_value($value)
     {
         $values = array_values($this->get_constants());
         return in_array($value, $values, $strict = true);
     }
 
+    /**
+     * @param $name
+     * @param array $selected
+     * @param array $params
+     * @param string $format
+     * @param array $exclude
+     * @return mixed|void
+     */
     public function generate_select($name, $selected = array(), $params = array(), $format
     = '', $exclude = array())
     {
@@ -127,6 +176,12 @@ abstract class Dynamic_Enum implements Enum
         echo '</select>';
     }
 
+    /**
+     * @param $name
+     * @param bool $default
+     * @param null $company_id
+     * @param null $user_id
+     */
     public function add($name, $default = false, $company_id = null, $user_id = null)
     {
         if ($this->model[get_called_class()] != null) {
@@ -143,6 +198,10 @@ abstract class Dynamic_Enum implements Enum
         }
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function get_name($value)
     {
         return array_search($value, $this->get_constants());

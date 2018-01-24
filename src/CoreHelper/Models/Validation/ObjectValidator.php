@@ -8,26 +8,55 @@
 
 namespace CoreHelper\Models\Validation;
 
-
+/**
+ * Class ObjectValidator
+ * @package CoreHelper\Models\Validation
+ */
 class ObjectValidator
 {
+    /**
+     * @var null
+     */
     private $name        = null;
+    /**
+     * @var null
+     */
     private $value       = null;
+    /**
+     * @var array
+     */
     private $errors      = array();
+    /**
+     * @var array
+     */
     private $allow_null  = array();
+    /**
+     * @var array
+     */
     private $allow_empty = array();
 
+    /**
+     * ObjectValidator constructor.
+     */
     public function __construct()
     {
 
     }
 
+    /**
+     * @param $name
+     * @param $value
+     */
     public function set_attribute($name, $value)
     {
         $this->name  = $name;
         $this->value = $value;
     }
 
+    /**
+     * @param $errors
+     * @return bool
+     */
     public function run(&$errors)
     {
         foreach ($this->allow_null as $field => $value) {

@@ -12,7 +12,6 @@ use mikehaertl\wkhtmlto\Pdf;
  */
 class PdfGenerator extends Pdf
 {
-
     const LANDSCAPE = 'landscape';
     const PORTRAIT = 'portrait';
 

@@ -20,8 +20,14 @@ abstract class Validatable
      * @var ObjectValidator
      */
     protected $_object_validator  = NULL;
+    /**
+     * @var null
+     */
     protected $_validation_errors = NULL;
 
+    /**
+     * @return mixed
+     */
     abstract protected function validate();
 
     /**
