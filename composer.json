@@ -4,7 +4,7 @@
     "description": "Helpers for Modernized Media's Core",
     "keywords": ["modernized media", "core", "core2", "core3"],
     "homepage": "http://github.com/darunada/corehelper",
-    "license" : "BSD",
+    "license" : "BSD-3-Clause",
     "authors" : [
         {
             "name": "Lea Fairbanks",
