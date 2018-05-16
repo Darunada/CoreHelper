@@ -106,7 +106,7 @@ class TableModel extends \MY_Model
      * @param string $method
      * @param array $arguments
      * @return \MY_Model
-     * @throws Exception
+     * @throws \Exception
      */
     public function __call($method, $arguments)
     {
@@ -118,7 +118,7 @@ class TableModel extends \MY_Model
             }
             return $result;
         }
-        throw new Exception("class '" . get_class($this) . "' does not have a method '" . $method . "'");
+        throw new \Exception("class '" . get_class($this) . "' does not have a method '" . $method . "'");
     }
 
     /**
